@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>مكتبة الألعاب - Game4fun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0a1a2f 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .game-card {
+            background: rgba(20, 30, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: #4ecdc4;
+            box-shadow: 0 15px 30px rgba(78,205,196,0.2);
+        }
+
+        .game-icon {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #1e2a3a, #0f1724);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .game-desc {
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #0f1724;
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #4ecdc4;
+            box-shadow: 0 0 30px rgba(78,205,196,0.3);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            background: #1a2538;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a3a50;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .close-modal {
+            background: #ff4757;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #ff6b81;
+            transform: scale(1.1);
+        }
+
+        .game-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .games-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+            .modal-content { width: 95%; height: 85%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🎮 Game4fun</h1>
+        <p class="subtitle">أكثر من 16 لعبة مجانية - اضغط على أي لعبة لتلعب مباشرة</p>
+        <p class="subtitle" style="font-size:0.9rem; margin-top:10px;">✨ جميع الألعاب تعمل بدون تحميل ✨</p>
+    </header>
+
+    <div class="games-grid" id="gamesContainer"></div>
+
+    <footer>
+        <p>🎉 استمتع بألعابك المفضلة مجاناً | تم التحديث 2025 🎉</p>
+        <p style="font-size:0.8rem; margin-top:10px;">تم إنشاء الموقع بواسطة Game4fun - جميع الحقوق محفوظة</p>
+    </footer>
+</div>
+
+<div id="gameModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title" id="modalTitle">اسم اللعبة</span>
+            <button class="close-modal" id="closeModalBtn">✕</button>
+        </div>
+        <iframe id="gameFrame" class="game-iframe" src="" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script>
+    const gamesList = [
+        { name: "🏃 المطارد الأزرق", desc: "اجمع النقاط وتجنب العقبات في لعبة الجري الممتعة", url: "https://html-classic.itch.zone/html/10937931/runner/index.html" },
+        { name: "🎯 لعبة السهام", desc: "اختبر دقتك في إصابة الأهداف", url: "https://cdn.htmlgames.com/DartsPlay/index.html" },
+        { name: "🧩 سودوكو", desc: "لعبة الأرقام الكلاسيكية لتنشيط الذاكرة", url: "https://www.kenkenpuzzle.com/play/sudoku" },
+        { name: "🏎️ سباق السيارات", desc: "قد سيارتك وتفوق على المنافسين", url: "https://play.gamepix.com/embed/street-racing-3d/embed?sid=88656" },
+        { name: "🕹️ كرة القدم", desc: "سجل الأهداف وتحدى الكمبيوتر", url: "https://www.playgamenow.net/games/soccer-heads/embed/" },
+        { name: "🍎 الثعبان الجائع", desc: "اللعبة الأسطورية - أطعم الثعبان وتجنب الاصطدام", url: "https://slither-io.io/game/slither-io" },
+        { name: "🧠 اختبار الذاكرة", desc: "تذكر تسلسل الأضواء والأصوات", url: "https://simon-game-xi.vercel.app/" },
+        { name: "⚾ البايسبول", desc: "اضرب الكرة وأحرز النقاط", url: "https://www.crazygames.com/embed/baseball-kings" },
+        { name: "🎨 تلوين سحري", desc: "لعبة استرخاء وتلوين إبداعية", url: "https://www.coloringgamesonline.com/embed/coloring-book" },
+        { name: "🧱 الكرة والطوب", desc: "اكسر كل الطوب باستخدام الكرة", url: "https://www.crazygames.com/embed/arkanoid-online" },
+        { name: "🐱 القط الطائر", desc: "ساعد القط على الطيران بين الأنابيب", url: "https://flappybird.io/embed" },
+        { name: "💣 إزالة الألغام", desc: "لعبة الألغاز الكلاسيكية", url: "https://minesweeperonline.com/embed" },
+        { name: "🃏 الورق", desc: "لعبة الورق الشهيرة سوليتير", url: "https://cdn.htmlgames.com/Solitaire/index.html" },
+        { name: "🤸 الجيم", desc: "تحديات رياضية ممتعة", url: "https://www.onlinegames.io/games/2023/unity/sports-heads-championship/index.html" },
+        { name: "🎲 النرد", desc: "لعبة حظ وتفكير", url: "https://www.playgamenow.net/games/yahtzee/embed/" },
+        { name: "🧩 بازل", desc: "رتب القطع لتكوين الصورة", url: "https://www.jigsawplanet.com/?rc=play&pid=0a8c9e2f4b" },
+        { name: "🚀 الفضاء", desc: "اطلق النار على الأعداء في الفضاء", url: "https://www.crazygames.com/embed/space-invaders" }
+    ];
+
+    const gamesContainer = document.getElementById('gamesContainer');
+    const modal = document.getElementById('gameModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const gameFrame = document.getElementById('gameFrame');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    function displayGames() {
+        gamesContainer.innerHTML = '';
+        gamesList.forEach((game, index) => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            const iconEmoji = game.name.charAt(0);
+            card.innerHTML = `
+                <div class="game-icon">${iconEmoji}</div>
+                <div class="game-info">
+                    <div class="game-title">${game.name}</div>
+                    <div class="game-desc">${game.desc}</div>
+                    <button class="play-btn" data-index="${index}">🎮 العب الآن</button>
+                </div>
+            `;
+            gamesContainer.appendChild(card);
+        });
+
+        document.querySelectorAll('.play-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = btn.getAttribute('data-index');
+                openGameModal(idx);
+            });
+        });
+    }
+
+    function openGameModal(index) {
+        const game = gamesList[index];
+        if (game) {
+            modalTitle.innerText = game.name;
+            gameFrame.src = game.url;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        gameFrame.src = '';
+        document.body.style.overflow = 'auto';
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    displayGames();
+</script>
+</body>
+</html>
